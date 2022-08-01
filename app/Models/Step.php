@@ -10,4 +10,9 @@ class Step extends Model
     use HasFactory;
 
     protected $table = "steps";
+    protected $fillable = [
+        'name',
+        'infos',
+        'documents',
+    ];
 }
