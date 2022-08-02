@@ -18,13 +18,21 @@ use App\Http\Controllers\StepController;
 
 // Store new report
 Route::post('/reports/create', [ReportController::class, 'store']);
-// Show report details
+// Show specified report details
 Route::get('/reports/{reportId}', [ReportController::class, 'show']);
+// Update specified report
+Route::put('/reports/{reportId}', [ReportController::class, 'update']);
 // Delete report
 Route::delete('/reports/{reportId}', [ReportController::class, 'destroy']);
-// Update report
-Route::put('/reports/{reportId}', [ReportController::class, 'update']);
 
 // Create step in specified report
 Route::post('/reports/{reportId}/steps/create', [StepController::class, 'store']);
-Route::get('/step/{id}', [StepController::class, 'show']);
+// Show specified step details in specified report
+Route::get('/reports/{reportId}/steps/{stepId}', [StepController::class, 'show']);
+// Update specified step in specified report
+Route::put('/reports/{reportId}/steps/{stepId}', [StepController::class, 'update']);
+Route::post('/reports/{reportId}/steps/update/{stepId}', [StepController::class, 'update']);
+
+// Delete specified step in specified report
+Route::delete('/reports/{reportId}/steps/{stepId}', [StepController::class, 'destroy']);
+Route::delete('/reports/{reportId}/steps/{stepId}/files/{fileId}', [StepController::class, 'destroyFile']);

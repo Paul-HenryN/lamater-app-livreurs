@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->json('files')->nullable();
             $table->foreignId('report_id')->constrained();
             $table->timestamps();
         });
