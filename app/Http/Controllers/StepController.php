@@ -13,22 +13,19 @@ class StepController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param  int $reportId
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $documentPaths = [];
-        $document = $request->file('documents');
-
-        $path = $document->store('documents');
-        $documentPaths[] = $path;
-
-        Step::create([
+        $step = Step::create([
             'name' => $request->name,
-            'infos' => $request->infos,
-            'documents' => json_encode($documentPaths),
+            'description' => $request->description,
+            'report_id' => $reportId,
         ]);
+
+        $step->addMediaFromRequest('file')->toMediaCollection('StepFiles');
     }
 
     /**

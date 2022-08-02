@@ -16,11 +16,15 @@ use App\Http\Controllers\StepController;
 |
 */
 
-// Reports
-Route::get('/reports', [ReportController::class, 'index']);
-Route::get('/report/{id}', [ReportController::class, 'show']);
-Route::post('/report/create', [ReportController::class, 'store']);
+// Store new report
+Route::post('/reports/create', [ReportController::class, 'store']);
+// Show report details
+Route::get('/reports/{reportId}', [ReportController::class, 'show']);
+// Delete report
+Route::delete('/reports/{reportId}', [ReportController::class, 'destroy']);
+// Update report
+Route::put('/reports/{reportId}', [ReportController::class, 'update']);
 
-// Steps
+// Create step in specified report
+Route::post('/reports/{reportId}/steps/create', [StepController::class, 'store']);
 Route::get('/step/{id}', [StepController::class, 'show']);
-Route::post('/step/create', [StepController::class, 'store']);

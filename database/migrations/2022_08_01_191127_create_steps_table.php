@@ -16,8 +16,9 @@ return new class extends Migration
         Schema::create('steps', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('infos')->nullable();
-            $table->json('documents')->nullable();
+            $table->string('description');
+            $table->json('files')->nullable();
+            $table->foreignId('report_id')->constrained();
             $table->timestamps();
         });
     }
