@@ -16,8 +16,8 @@ class ReportController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'description' => ['required'],
+            'name' => 'required|max:255',
+            'description' => 'required|max:255',
         ]);
 
         $newReport = Report::create([
@@ -41,7 +41,7 @@ class ReportController extends Controller
         $report = Report::with('steps')->find($reportId);
 
         if(! $report)
-            return response(['error' => true, 'message' => "Report $reportId not found"], 404);
+            return $this->throwNotFoundError("Report #$reportId not found");
 
         return response()->json($report);
     }
@@ -55,10 +55,14 @@ class ReportController extends Controller
      */
     public function update(Request $request, $reportId)
     {
+        $request->validate([
+            'name' => 'nullable|max:255',
+            'description' => 'nullable|max:255',
+        ]);
+
         $report = Report::with('steps')->find($reportId);
-        
         if(! $report)
-            return response(['error' => true, 'message' => "Report $reportId not found"], 404);
+            return $this->throwNotFoundError("Report #$reportId not found");
 
         if($request->has('name'))
             $report->name = $request->name;
@@ -81,7 +85,7 @@ class ReportController extends Controller
         $report = Report::find($reportId);
 
         if(! $report)
-            return response(['error' => true, 'message' => "Report $reportId not found"], 404);
+            return $this->throwNotFoundError("Report #$reportId not found");
 
         $report->delete();
     }

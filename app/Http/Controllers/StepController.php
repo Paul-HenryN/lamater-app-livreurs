@@ -22,10 +22,14 @@ class StepController extends Controller
     public function store(Request $request, $reportId)
     {
         $request->validate([
-            'name' => 'required',
-            'description' => 'required',
+            'name' => 'required|max:255',
+            'description' => 'required|max:255',
             'files' => 'nullable'
         ]);
+
+        $report = Report::find($reportId);
+        if(! $report)
+            return $this->throwNotFoundError("Report #$reportId not found");
 
         $step = Step::create([
             'name' => $request->name,
@@ -52,10 +56,13 @@ class StepController extends Controller
      */
     public function show($reportId, $stepId)
     {
-        $step = Step::where("report_id", $reportId)->find($stepId);
+        $report = Report::find($reportId);
+        if(! $report)
+            return $this->throwNotFoundError("Report #$reportId not found");
 
+        $step = Step::where("report_id", $reportId)->find($stepId);
         if(! $step)
-            return response(['error' => true, 'message' => "Step #$stepId not found in report #$reportId"], 404);
+            return $this->throwNotFoundError("Step #$stepId not found in report #$reportId");
 
         return response()->json(new StepResource($step));
     }
@@ -76,10 +83,13 @@ class StepController extends Controller
             'files' => 'nullable',
         ]);
 
+        $report = Report::find($reportId);
+        if(! $report)
+            return $this->throwNotFoundError("Report #$reportId not found");
+
         $step = Step::where("report_id", $reportId)->find($stepId);
-        
         if(! $step)
-            return response(['error' => true, 'message' => "Step #$stepId not found in report #$reportId"], 404);
+            return $this->throwNotFoundError("Step #$stepId not found in report #$reportId");
 
         if($request->has('name'))
             $step->name = $request->name;
@@ -106,10 +116,13 @@ class StepController extends Controller
      */
     public function destroy($reportId, $stepId)
     {
-        $step = Step::where("report_id", $reportId)->find($stepId);
+        $report = Report::find($reportId);
+        if(! $report)
+            return $this->throwNotFoundError("Report #$reportId not found");
 
+        $step = Step::where("report_id", $reportId)->find($stepId);
         if(! $step)
-            return response(['error' => true, 'message' => "Step #$stepId not found in report #$reportId"], 404);
+            return $this->throwNotFoundError("Step #$stepId not found in report #$reportId");
 
         $step->delete();
     }
@@ -126,16 +139,16 @@ class StepController extends Controller
     {
         $report = Report::find($reportId);
         if(! $report)
-            return response(['error' => true, 'message' => "Report #$reportId not found"], 404);
+            return $this->throwNotFoundError("Report #$reportId not found");
 
         $step = Step::where("report_id", $reportId)->find($stepId);
         if(! $step)
-            return response(['error' => true, 'message' => "Step #$stepId not found in report #$reportId"], 404);
+            return $this->throwNotFoundError("Step #$stepId not found in report #$reportId");
 
         $file = $step->getMedia('stepFiles')->find($fileId);
         if(! $file)
-            return response(['error' => true, 'message' => "File #$fileId not found for step #$stepId of report #$reportId"], 404);
+            return $this->throwNotFoundError("File #$fileId not found for step #$stepId of report #$reportId");
 
         $file->delete();
-    }
+    } 
 }

@@ -31,8 +31,7 @@ Route::post('/reports/{reportId}/steps/create', [StepController::class, 'store']
 Route::get('/reports/{reportId}/steps/{stepId}', [StepController::class, 'show']);
 // Update specified step in specified report
 Route::put('/reports/{reportId}/steps/{stepId}', [StepController::class, 'update']);
-Route::post('/reports/{reportId}/steps/update/{stepId}', [StepController::class, 'update']);
-
 // Delete specified step in specified report
 Route::delete('/reports/{reportId}/steps/{stepId}', [StepController::class, 'destroy']);
+// Delete specified file of specified step in specified report
 Route::delete('/reports/{reportId}/steps/{stepId}/files/{fileId}', [StepController::class, 'destroyFile']);
