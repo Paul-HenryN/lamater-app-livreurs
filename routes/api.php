@@ -16,6 +16,8 @@ use App\Http\Controllers\StepController;
 |
 */
 
+// Get all reports
+Route::get('/reports', [ReportController::class, 'index']);
 // Store new report
 Route::post('/reports/create', [ReportController::class, 'store']);
 // Show specified report details

@@ -8,6 +8,16 @@ use App\Models\Report;
 class ReportController extends Controller
 {
     /**
+     * A listing of the specified resource.
+     */
+    public function index()
+    {
+        $reports = Report::all();
+
+        return response()->json($reports);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
