@@ -27,16 +27,19 @@ class ReportController extends Controller
     {
         $request->validate([
             'name' => 'required|max:255',
-            'description' => 'required|max:255',
+            'description' => 'nullable|max:255',
         ]);
 
         $newReport = Report::create([
             'name' => $request->name,
-            'description' => $request->description,
         ]);
 
-        $newReport = Report::with('steps')->find($newReport->id);
+        if($request->has('description')) {
+            $newReport->description = $request->description;
+            $newReport->save();
+        }
 
+        $newReport = Report::with('steps')->find($newReport->id);
         return response()->json($newReport);
     }
 

@@ -23,7 +23,7 @@ class StepController extends Controller
     {
         $request->validate([
             'name' => 'required|max:255',
-            'description' => 'required|max:255',
+            'description' => 'nullable|max:255',
             'files' => 'nullable'
         ]);
 
@@ -31,20 +31,24 @@ class StepController extends Controller
         if(! $report)
             return $this->throwNotFoundError("Report #$reportId not found");
 
-        $step = Step::create([
+        $newStep = Step::create([
             'name' => $request->name,
-            'description' => $request->description,
             'report_id' => $reportId,
         ]);
 
+        if($request->has('description')) {
+            $newStep->description = $request->description;
+            $newStep->save();
+        }
+
         if($request->hasfile('files')) {
-            $fileAdders = $step->addMultipleMediaFromRequest(['files'])
+            $fileAdders = $newStep->addMultipleMediaFromRequest(['files'])
                             ->each(function ($fileAdder) {
                                 $fileAdder->toMediaCollection('stepFiles');
                             });
         }
 
-        return response()->json(new StepResource($step));
+        return response()->json(new StepResource($newStep));
     }
 
     /**
