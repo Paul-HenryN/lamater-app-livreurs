@@ -48,6 +48,7 @@ class StepController extends Controller
                             });
         }
 
+        $newStep = Step::find($newStep->id);
         return response()->json(new StepResource($newStep));
     }
 

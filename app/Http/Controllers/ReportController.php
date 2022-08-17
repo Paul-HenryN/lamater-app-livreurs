@@ -4,15 +4,28 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Report;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
     /**
      * A listing of the specified resource.
+     * 
+     * @param  \Illuminate\Http\Request  $request
      */
-    public function index()
+    public function index(Request $request)
     {
-        $reports = Report::all();
+        $sortBy = ($request->query('sort_by'))? $request->query('sort_by') : 'id';
+        $sortDir = ($request->query('sort_dir'))? $request->query('sort_dir') : 'asc';
+        $perPage = ($request->query('per_page'))? $request->query('per_page') : 5;
+        $status = $request->query('status');
+
+        $reports = DB::table('reports')->orderBy($sortBy, $sortDir);
+
+        if($status)
+            $reports = $reports->where('status', $status);
+
+        $reports = $reports->simplePaginate($perPage);
 
         return response()->json($reports);
     }
