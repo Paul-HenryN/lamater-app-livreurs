@@ -20,7 +20,7 @@ class ReportController extends Controller
         $perPage = ($request->query('per_page'))? $request->query('per_page') : 5;
         $status = $request->query('status');
 
-        $reports = DB::table('reports')->orderBy($sortBy, $sortDir);
+        $reports = Report::with('steps')->orderBy($sortBy, $sortDir);
 
         if($status)
             $reports = $reports->where('status', $status);
