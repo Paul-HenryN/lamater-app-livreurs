@@ -84,6 +84,7 @@ class ReportController extends Controller
         $request->validate([
             'name' => 'nullable|max:255',
             'description' => 'nullable|max:255',
+            'status' => 'nullable|boolean',
         ]);
 
         $report = Report::with('steps')->find($reportId);
@@ -94,6 +95,8 @@ class ReportController extends Controller
             $report->name = $request->name;
         if($request->has('description'))
             $report->description = $request->description;
+        if($request->has('status'))
+            $report->status = $request->status;
             
         $report->save();
         
