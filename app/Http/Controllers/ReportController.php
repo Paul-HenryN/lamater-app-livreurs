@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Report;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\ReportResource;
 
 class ReportController extends Controller
 {
@@ -27,7 +28,13 @@ class ReportController extends Controller
 
         $reports = $reports->simplePaginate($perPage);
 
-        return response()->json($reports);
+        $reportResources = [];
+
+        foreach($reports as $report){
+            $reportResources[] = new ReportResource($report);
+        }
+
+        return response()->json($reportResources);
     }
 
     /**

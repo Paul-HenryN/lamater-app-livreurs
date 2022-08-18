@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class StepResource extends JsonResource
+class ReportResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,8 +15,13 @@ class StepResource extends JsonResource
     public function toArray($request)
     {
         $data = parent::toArray($request);
-        $data['files'] = $this->getMedia('stepFiles')->toArray();
 
+        $stepResources = [];
+        foreach($this->steps as $step) {
+            $stepResources[] = new StepResource($step);
+        }
+
+        $data['steps'] = $stepResources;
         return $data;
     }
 }
