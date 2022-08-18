@@ -22,7 +22,7 @@ class ReportController extends Controller
 
         $reports = Report::with('steps')->orderBy($sortBy, $sortDir);
 
-        if($status)
+        if($status != null)
             $reports = $reports->where('status', $status);
 
         $reports = $reports->simplePaginate($perPage);
