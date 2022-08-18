@@ -16,16 +16,16 @@ class ReportController extends Controller
      */
     public function index(Request $request)
     {
-        $sortBy = ($request->query('sort_by'))? $request->query('sort_by') : 'id';
-        $sortDir = ($request->query('sort_dir'))? $request->query('sort_dir') : 'asc';
-        $perPage = ($request->query('per_page'))? $request->query('per_page') : 5;
+        $sortBy = ($request->query('sort_by')) ? $request->query('sort_by') : 'id';
+        $sortDir = ($request->query('sort_dir')) ? $request->query('sort_dir') : 'asc';
+        $perPage = ($request->query('per_page')) ? $request->query('per_page') : 5;
         $status = $request->query('status');
 
         $reports = Report::with('steps')->orderBy($sortBy, $sortDir);
-
         if($status != null)
             $reports = $reports->where('status', $status);
-        $reports = ReportResource::collection($reports)->paginate($perPage);
+
+        $reports = ReportResource::collection($reports->paginate($perPage));
         return response()->json($reports);
     }
 
