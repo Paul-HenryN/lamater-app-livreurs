@@ -25,7 +25,7 @@ class ReportController extends Controller
 
         if($status != null)
             $reports = $reports->where('status', $status);
-        $reports = ReportResource::collection($reports->paginate($perPage));
+        $reports = ReportResource::collection($reports)->paginate($perPage);
         return response()->json($reports);
     }
 
