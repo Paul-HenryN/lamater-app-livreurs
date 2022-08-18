@@ -22,9 +22,17 @@ class ReportController extends Controller
         $status = $request->query('status');
 
         $reports = Report::with('steps')->orderBy($sortBy, $sortDir);
+
         if($status != null)
             $reports = $reports->where('status', $status);
-        return response()->json($reports->paginate($perPage));
+
+        $reports = $reports->paginate($perPage);
+
+        for ($i=0; $i < count($reports); $i++) { 
+                $reports[$i] = new ReportResource($reports[$i]);
+            }
+
+        return response()->json($reports);
     }
 
     /**
