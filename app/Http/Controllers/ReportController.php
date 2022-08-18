@@ -28,6 +28,7 @@ class ReportController extends Controller
 
         $reports = $reports->paginate($perPage);
 
+        //Replace reports with reportResources
         for ($i=0; $i < count($reports); $i++) { 
                 $reports[$i] = new ReportResource($reports[$i]);
             }
