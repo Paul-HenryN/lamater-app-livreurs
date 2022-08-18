@@ -24,9 +24,7 @@ class ReportController extends Controller
         $reports = Report::with('steps')->orderBy($sortBy, $sortDir);
         if($status != null)
             $reports = $reports->where('status', $status);
-
-        $reports = ReportResource::collection($reports->paginate($perPage));
-        return response()->json($reports);
+        return response()->json($reports->paginate($perPage));
     }
 
     /**
