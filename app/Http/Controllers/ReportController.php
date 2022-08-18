@@ -21,13 +21,10 @@ class ReportController extends Controller
         $perPage = ($request->query('per_page')) ? $request->query('per_page') : 5;
         $status = $request->query('status');
 
-        $reports = Report::with('steps')->orderBy($sortBy, $sortDir)->simplePaginate($perPage);
-
-        for ($i=0; $i < count($reports); $i++) { 
-            $reports[$i] = new ReportResource($reports[$i]);
-        }
-
-        return response()->json($reports);
+        $reports = Report::with('steps')->orderBy($sortBy, $sortDir);
+        if($status != null)
+            $reports = $reports->where('status', $status);
+        return response()->json($reports->paginate($perPage));
     }
 
     /**
