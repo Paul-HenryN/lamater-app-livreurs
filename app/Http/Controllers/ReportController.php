@@ -23,6 +23,7 @@ class ReportController extends Controller
 
         $reports = Report::with('steps')->orderBy($sortBy, $sortDir)->simplePaginate($perPage);
 
+        //Replace reports with reportResources
         for ($i=0; $i < count($reports); $i++) { 
             $reports[$i] = new ReportResource($reports[$i]);
         }
