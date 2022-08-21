@@ -13,4 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Voyager::routes();
+Route::prefix('admin')->group(function () {
+    Voyager::routes();
+});
