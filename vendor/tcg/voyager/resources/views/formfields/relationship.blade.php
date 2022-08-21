@@ -15,7 +15,12 @@
                 @endphp
 
                 @if (isset($query))
-                    <a href="/admin/reports/{{ $query->id }}">{{ $query->{$options->label} }}</a>
+                    <a
+                        href="{{ route('voyager.' . $options->table . '.show', [
+                            'id' => $query->id,
+                        ]) }}">
+                        {{ $query->{$options->label} }}
+                    </a>
                 @else
                     <p>{{ __('voyager::generic.no_results') }}</p>
                 @endif
@@ -83,7 +88,11 @@
                     @else
                         {{-- <p>{{ $string_values }}</p> --}}
                         @foreach ($selected_values as $selected_value)
-                            <a href="#">{{ $selected_value->{$options->label} }},</a>
+                            <a
+                                href="{{ route('voyager.' . $options->table . '.show', [
+                                    'id' => $selected_value->id,
+                                ]) }}">{{ $selected_value->{$options->label} }},
+                            </a>
                         @endforeach
                     @endif
                 @else
@@ -93,7 +102,11 @@
                         <ul>
                             @foreach ($selected_values as $selected_value)
                                 <li>
-                                    <a href="/admin/{{ $options->table }}/{{ $selected_value->id }}">
+                                    <a
+                                        href="{{ route('voyager.' . $options->table . '.show', [
+                                            'id' => $selected_value->id,
+                                        ]) }}">
+
                                         {{ $selected_value->{$options->label} }}
                                     </a>
                                 </li>
