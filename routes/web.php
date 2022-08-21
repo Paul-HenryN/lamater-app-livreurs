@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MediaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +20,5 @@ Route::get('/', function() {
 
 Route::prefix('admin')->group(function () {
     Voyager::routes();
+    Route::get('/download/{mediaId}', [MediaController::class, 'download'])->name('download');
 });

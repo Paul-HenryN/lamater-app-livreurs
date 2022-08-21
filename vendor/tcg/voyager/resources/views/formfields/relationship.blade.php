@@ -70,23 +70,20 @@
                     $model = app($options->model);
                     
                     $selected_values = $model::where($options->column, '=', $relationshipData->{$options->key})->get();
-                    // ->map(function ($item, $key) use ($options) {
-                    //     return $item->{$options->label};
-                    // })
-                    // ->all();
                 @endphp
 
                 @if ($view == 'browse')
-                    {{-- @php
-                        $string_values = implode(', ', $selected_values);
-                        if (mb_strlen($string_values) > 25) {
-                            $string_values = mb_substr($string_values, 0, 25) . '...';
-                        }
-                    @endphp --}}
                     @if (empty($selected_values))
                         <p>{{ __('voyager::generic.no_results') }}</p>
+                    @elseif ($options->table == 'media')
+                        <p>
+                            @foreach ($selected_values as $selected_value)
+                                <a href="{{ route('download', ['mediaId' => $selected_value->id]) }}" title="Download">
+                                    {{ $selected_value->{$options->label} }}
+                                </a>,
+                            @endforeach
+                        </p>
                     @else
-                        {{-- <p>{{ $string_values }}</p> --}}
                         @foreach ($selected_values as $selected_value)
                             <a
                                 href="{{ route('voyager.' . $options->table . '.show', [
@@ -98,6 +95,17 @@
                 @else
                     @if (empty($selected_values))
                         <p>{{ __('voyager::generic.no_results') }}</p>
+                    @elseif ($options->table == 'media')
+                        <ul>
+                            @foreach ($selected_values as $selected_value)
+                                <li>
+                                    <a href="{{ route('download', ['mediaId' => $selected_value->id]) }}"
+                                        title="Download">
+                                        {{ $selected_value->{$options->label} }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
                     @else
                         <ul>
                             @foreach ($selected_values as $selected_value)
